@@ -1,0 +1,362 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("Patient")
+  isVerified   Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  clinicId     String?  @db.Uuid
+  clinic       Clinic?  @relation(fields: [clinicId], references: [id])
+  refreshToken String?
+  googleId     String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  doctors    Doctor[]
+  patients   Patient[]
+  notifications Notification[]
+  aiInteractions AIInteraction[]
+  auditLogs  AuditLog[]
+  verificationTokens VerificationToken[]
+
+  @@index([email])
+  @@index([clinicId])
+  @@index([role])
+}
+
+model Clinic {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  address      String
+  phone        String
+  email        String
+  settings     Json     @default("{}")
+  workingHours Json     @default("{}")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  departments  Department[]
+  users        User[]
+  patients     Patient[]
+  appointments Appointment[]
+}
+
+model Department {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  clinicId    String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  clinic Clinic @relation(fields: [clinicId], references: [id])
+  doctors DoctorDepartment[]
+
+  @@index([clinicId])
+}
+
+model Doctor {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @unique @db.Uuid
+  specialization  String
+  qualifications  Json     @default("[]")
+  schedule        Json?
+  isAvailable     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user        User              @relation(fields: [userId], references: [id])
+  departments DoctorDepartment[]
+  appointments Appointment[]
+  prescriptions Prescription[]
+  medicalRecords MedicalRecord[]
+  leaveRecords  LeaveRecord[]
+  labOrders     LabOrder[]
+}
+
+model DoctorDepartment {
+  doctorId     String @db.Uuid
+  departmentId String @db.Uuid
+  createdAt    DateTime @default(now())
+
+  doctor     Doctor     @relation(fields: [doctorId], references: [id])
+  department Department @relation(fields: [departmentId], references: [id])
+
+  @@id([doctorId, departmentId])
+}
+
+model LeaveRecord {
+  id        String   @id @default(uuid()) @db.Uuid
+  doctorId  String   @db.Uuid
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  reason    String
+  status    String   @default("Pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+
+  @@index([doctorId])
+}
+
+model Patient {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String?  @unique @db.Uuid
+  clinicId         String   @db.Uuid
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime @db.Date
+  gender           String
+  phone            String
+  email            String?
+  address          String?
+  bloodGroup       String?
+  medicalHistory   Json     @default("[]")
+  allergies        Json     @default("[]")
+  emergencyContact Json?
+  insuranceDetails Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user         User?           @relation(fields: [userId], references: [id])
+  clinic       Clinic          @relation(fields: [clinicId], references: [id])
+  appointments Appointment[]
+  medicalRecords MedicalRecord[]
+  prescriptions Prescription[]
+  invoices     Invoice[]
+  labOrders    LabOrder[]
+
+  @@index([clinicId])
+  @@index([firstName, lastName])
+}
+
+model Appointment {
+  id         String   @id @default(uuid()) @db.Uuid
+  patientId  String   @db.Uuid
+  doctorId   String   @db.Uuid
+  clinicId   String   @db.Uuid
+  dateTime   DateTime
+  endTime    DateTime
+  status     String   @default("Scheduled")
+  reason     String?
+  notes      String?
+  queueNumber Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  patient       Patient        @relation(fields: [patientId], references: [id])
+  doctor        Doctor         @relation(fields: [doctorId], references: [id])
+  clinic        Clinic         @relation(fields: [clinicId], references: [id])
+  medicalRecord MedicalRecord?
+  prescriptions Prescription[]
+  invoices      Invoice[]
+
+  @@unique([doctorId, dateTime])
+  @@index([clinicId, dateTime])
+  @@index([patientId])
+  @@index([doctorId, status])
+}
+
+model MedicalRecord {
+  id                String   @id @default(uuid()) @db.Uuid
+  patientId         String   @db.Uuid
+  doctorId          String   @db.Uuid
+  appointmentId     String?  @unique @db.Uuid
+  consultationNotes String
+  diagnosis         String?
+  treatmentPlan     String?
+  vitals            Json?
+  attachments       Json     @default("[]")
+  aiSummary         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  patient  Patient   @relation(fields: [patientId], references: [id])
+  doctor   Doctor    @relation(fields: [doctorId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+  labOrders LabOrder[]
+
+  @@index([patientId])
+}
+
+model Prescription {
+  id                     String    @id @default(uuid()) @db.Uuid
+  patientId              String    @db.Uuid
+  doctorId               String    @db.Uuid
+  appointmentId          String?   @db.Uuid
+  medications            Json
+  notes                  String?
+  isAIGenerated          Boolean   @default(false)
+  requiresDoctorApproval Boolean   @default(true)
+  approvedAt             DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  patient      Patient       @relation(fields: [patientId], references: [id])
+  doctor       Doctor        @relation(fields: [doctorId], references: [id])
+  appointment  Appointment?  @relation(fields: [appointmentId], references: [id])
+  dispensations Dispensation[]
+
+  @@index([patientId])
+}
+
+model LabOrder {
+  id               String   @id @default(uuid()) @db.Uuid
+  patientId        String   @db.Uuid
+  doctorId         String   @db.Uuid
+  medicalRecordId  String?  @db.Uuid
+  testName         String
+  instructions     String?
+  status           String   @default("Ordered")
+  result           String?
+  resultFile       String?
+  reviewedByDoctor Boolean  @default(false)
+  reviewedAt       DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  patient      Patient?      @relation(fields: [patientId], references: [id])
+  doctor       Doctor        @relation(fields: [doctorId], references: [id])
+  medicalRecord MedicalRecord? @relation(fields: [medicalRecordId], references: [id])
+}
+
+model Medicine {
+  id             String   @id @default(uuid()) @db.Uuid
+  name           String
+  genericName    String
+  category       String
+  unit           String
+  price          Decimal  @db.Decimal(10, 2)
+  stockQuantity  Int      @default(0)
+  minStockLevel  Int
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  dispensations Dispensation[]
+}
+
+model Dispensation {
+  id             String   @id @default(uuid()) @db.Uuid
+  prescriptionId String   @db.Uuid
+  medicineId     String   @db.Uuid
+  quantity       Int
+  pharmacistId   String   @db.Uuid
+  notes          String?
+  createdAt      DateTime @default(now())
+
+  prescription Prescription @relation(fields: [prescriptionId], references: [id])
+  medicine     Medicine     @relation(fields: [medicineId], references: [id])
+}
+
+model Invoice {
+  id                String   @id @default(uuid()) @db.Uuid
+  patientId         String   @db.Uuid
+  appointmentId     String?  @db.Uuid
+  invoiceNumber     String   @unique
+  subtotal          Decimal  @db.Decimal(10, 2)
+  taxPercentage     Decimal  @db.Decimal(5, 2)
+  taxAmount         Decimal  @db.Decimal(10, 2)
+  discountPercentage Decimal @db.Decimal(5, 2)
+  discountAmount    Decimal  @db.Decimal(10, 2)
+  total             Decimal  @db.Decimal(10, 2)
+  status            String   @default("Pending")
+  paidAt            DateTime?
+  isDeleted         Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  patient  Patient   @relation(fields: [patientId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+  payments  Payment[]
+
+  @@index([patientId, status])
+  @@index([invoiceNumber])
+}
+
+model Payment {
+  id        String   @id @default(uuid()) @db.Uuid
+  invoiceId String   @db.Uuid
+  amount    Decimal  @db.Decimal(10, 2)
+  method    String
+  reference String?
+  notes     String?
+  createdAt DateTime @default(now())
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  type      String
+  channel   String
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+}
+
+model VerificationToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  token     String    @unique
+  type      String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([token])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @db.Uuid
+  action    String
+  entity    String
+  entityId  String?  @db.Uuid
+  details   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+model AIInteraction {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  requestType String
+  prompt      String
+  response    String
+  wasApproved Boolean?
+  approvedBy  String?   @db.Uuid
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
