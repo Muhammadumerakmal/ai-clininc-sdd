@@ -7,6 +7,12 @@ import medicalRecordRoutes from "../modules/medical-record/routes/medical-record
 import prescriptionRoutes from "../modules/prescription/routes/prescription.routes.js";
 import labRoutes from "../modules/lab/routes/lab.routes.js";
 import pharmacyRoutes from "../modules/pharmacy/routes/pharmacy.routes.js";
+import doctorRoutes from "../modules/doctor/routes/doctor.routes.js";
+import clinicRoutes from "../modules/clinic/routes/clinic.routes.js";
+import billingRoutes from "../modules/billing/routes/billing.routes.js";
+import notificationRoutes from "../modules/notification/routes/notification.routes.js";
+import reportRoutes from "../modules/reports/routes/report.routes.js";
+import aiRoutes from "../modules/ai/routes/ai.routes.js";
 
 const router = Router();
 
@@ -18,5 +24,11 @@ router.use("/medical-records", medicalRecordRoutes);
 router.use("/prescriptions", prescriptionRoutes);
 router.use("/lab-orders", labRoutes);
 router.use("/pharmacy", pharmacyRoutes);
+router.use("/doctors", doctorRoutes);
+router.use("/clinics", clinicRoutes);
+router.use("/billing", billingRoutes);
+router.use("/notifications", notificationRoutes);
+router.use("/reports", reportRoutes);
+router.use("/ai", aiRoutes);
 
 export default router;
