@@ -31,7 +31,7 @@ const patientSchema = new Schema<IPatient>(
     email: { type: String },
     address: { type: String },
     bloodGroup: { type: String },
-    medicalHistory: { type: [Schema.Types.Mixed], default: [] },
+    medicalHistory: { type: [Schema.Types.Mixed], default: [] } as any,
     allergies: { type: [String], default: [] },
     emergencyContact: { type: Schema.Types.Mixed },
     insuranceDetails: { type: Schema.Types.Mixed },

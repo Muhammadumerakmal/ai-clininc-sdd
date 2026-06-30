@@ -18,7 +18,7 @@ const prescriptionSchema = new Schema<IPrescription>(
     patientId: { type: String, required: true, index: true },
     doctorId: { type: String, required: true },
     appointmentId: { type: String },
-    medications: { type: [Schema.Types.Mixed], required: true },
+    medications: { type: [Schema.Types.Mixed], required: true } as any,
     notes: { type: String },
     isAIGenerated: { type: Boolean, default: false },
     requiresDoctorApproval: { type: Boolean, default: true },

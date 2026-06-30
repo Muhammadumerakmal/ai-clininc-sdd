@@ -33,6 +33,7 @@ export async function updateProfile(req: Request, res: Response, next: NextFunct
       throw new ValidationError("Nothing to update");
     }
     const user = await authRepo.updateProfile(req.user!.userId, { name, email });
+    if (!user) throw new NotFoundError("User not found");
     sendSuccess(res, { id: user.id, name: user.name, email: user.email });
   } catch (error) {
     next(error);
@@ -54,7 +55,7 @@ export async function changePassword(req: Request, res: Response, next: NextFunc
     }
 
     const newHash = await hashPassword(newPassword);
-    await authRepo.updatePassword(user.id, newHash);
+    await authRepo.updatePassword(user._id.toString(), newHash);
     sendSuccess(res, {}, "Password changed successfully");
   } catch (error) {
     next(error);

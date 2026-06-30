@@ -23,7 +23,7 @@ const medicalRecordSchema = new Schema<IMedicalRecord>(
     diagnosis: { type: String },
     treatmentPlan: { type: String },
     vitals: { type: Schema.Types.Mixed },
-    attachments: { type: [Schema.Types.Mixed], default: [] },
+    attachments: { type: [Schema.Types.Mixed], default: [] } as any,
     aiSummary: { type: String },
   },
   { timestamps: true }
