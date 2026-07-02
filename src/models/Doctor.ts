@@ -14,6 +14,7 @@ const doctorSchema = new Schema<IDoctor>(
   {
     userId: { type: String, required: true, unique: true },
     specialization: { type: String, required: true },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     qualifications: { type: [Schema.Types.Mixed], default: [] } as any,
     schedule: { type: Schema.Types.Mixed },
     isAvailable: { type: Boolean, default: true },

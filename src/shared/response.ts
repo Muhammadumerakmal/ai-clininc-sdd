@@ -20,6 +20,7 @@ export function sendError(res: Response, message: string, statusCode = 400, erro
   const response: ApiResponse = {
     success: false,
     message,
+    data: null,
     errors,
   };
   res.status(statusCode).json(response);

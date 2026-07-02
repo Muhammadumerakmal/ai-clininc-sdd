@@ -7,12 +7,17 @@ export interface TokenPayload {
   clinicId?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const accessOptions: any = { expiresIn: env.ACCESS_TOKEN_EXPIRY };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const refreshOptions: any = { expiresIn: env.REFRESH_TOKEN_EXPIRY };
+
 export function generateAccessToken(payload: TokenPayload): string {
-  return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, { expiresIn: env.ACCESS_TOKEN_EXPIRY as any });
+  return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, accessOptions);
 }
 
 export function generateRefreshToken(payload: TokenPayload): string {
-  return jwt.sign(payload, env.REFRESH_TOKEN_SECRET, { expiresIn: env.REFRESH_TOKEN_EXPIRY as any });
+  return jwt.sign(payload, env.REFRESH_TOKEN_SECRET, refreshOptions);
 }
 
 export function verifyRefreshToken(token: string): TokenPayload {

@@ -5,7 +5,7 @@ import { logger } from "../../../config/logger.js";
 const repo = new ClinicRepository();
 
 export class ClinicService {
-  async create(data: { name: string; address: string; phone: string; email: string; settings?: any; workingHours?: any }) {
+  async create(data: { name: string; address: string; phone: string; email: string; settings?: Record<string, unknown>; workingHours?: Record<string, unknown> }) {
     const clinic = await repo.create(data);
     logger.info({ event: "clinic_created", clinicId: clinic.id });
     return clinic;

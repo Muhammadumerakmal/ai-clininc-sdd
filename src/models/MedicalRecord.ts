@@ -23,6 +23,7 @@ const medicalRecordSchema = new Schema<IMedicalRecord>(
     diagnosis: { type: String },
     treatmentPlan: { type: String },
     vitals: { type: Schema.Types.Mixed },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attachments: { type: [Schema.Types.Mixed], default: [] } as any,
     aiSummary: { type: String },
   },

@@ -31,6 +31,7 @@ const patientSchema = new Schema<IPatient>(
     email: { type: String },
     address: { type: String },
     bloodGroup: { type: String },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     medicalHistory: { type: [Schema.Types.Mixed], default: [] } as any,
     allergies: { type: [String], default: [] },
     emergencyContact: { type: Schema.Types.Mixed },

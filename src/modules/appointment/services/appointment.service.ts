@@ -97,19 +97,20 @@ export class AppointmentService {
     if (params.patientId) where.patientId = params.patientId;
     if (params.clinicId) where.clinicId = params.clinicId;
     if (params.dateFrom || params.dateTo) {
-      where.dateTime = {} as any;
-      if (params.dateFrom) (where.dateTime as any).gte = params.dateFrom;
-      if (params.dateTo) (where.dateTime as any).lte = params.dateTo;
+      const dateFilter: Record<string, Date> = {};
+      if (params.dateFrom) dateFilter.gte = params.dateFrom;
+      if (params.dateTo) dateFilter.lte = params.dateTo;
+      where.dateTime = dateFilter;
     }
 
     const [appointments, total] = await Promise.all([
       appointmentRepo.findMany({
         skip: (params.page - 1) * params.limit,
         take: params.limit,
-        where: where as any,
+        where,
         orderBy: { dateTime: "desc" },
       }),
-      appointmentRepo.count(where as any),
+      appointmentRepo.count(where),
     ]);
 
     return {

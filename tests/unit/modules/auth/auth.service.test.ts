@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-vi.mock("../../../src/config/database.js", () => ({}));
-vi.mock("../../../src/models/User.js", () => ({
+vi.mock("../../../../src/config/database", () => ({}));
+vi.mock("../../../../src/models/User", () => ({
   User: {
     findOne: vi.fn(),
     findById: vi.fn(),
@@ -12,8 +12,8 @@ vi.mock("../../../src/models/User.js", () => ({
   },
 }));
 
-import { AuthService } from "../../../src/modules/auth/services/auth.service.js";
-import { User } from "../../../src/models/User.js";
+import { AuthService } from "../../../../src/modules/auth/services/auth.service";
+import { User } from "../../../../src/models/User";
 
 describe("AuthService", () => {
   let authService: AuthService;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import app from "../../../src/app.js";
+import app from "../../../../src/app";
 
 describe("Auth API", () => {
   describe("POST /api/v1/auth/register", () => {

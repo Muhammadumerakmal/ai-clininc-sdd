@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import app from "../../../src/app.js";
+import app from "../../../../src/app";
 
 describe("Medical Record API", () => {
   it("should require auth", async () => {

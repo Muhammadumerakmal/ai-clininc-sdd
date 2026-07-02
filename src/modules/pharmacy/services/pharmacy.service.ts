@@ -41,10 +41,10 @@ export class PharmacyService {
       repo.findMedicines({
         skip: (params.page - 1) * params.limit,
         take: params.limit,
-        where: where as any,
+        where,
         orderBy: { name: "asc" },
       }),
-      repo.countMedicines(where as any),
+      repo.countMedicines(where),
     ]);
 
     return {

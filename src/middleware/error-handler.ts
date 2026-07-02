@@ -8,6 +8,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
     const response: Record<string, unknown> = {
       success: false,
       message: err.message,
+      data: null,
     };
 
     if ("errors" in err && (err as ValidationError).errors?.length > 0) {
@@ -27,6 +28,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
   res.status(500).json({
     success: false,
     message: env.NODE_ENV === "production" ? "Internal server error" : err.message,
+    data: null,
   });
 }
 

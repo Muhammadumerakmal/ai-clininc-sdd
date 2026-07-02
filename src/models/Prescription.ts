@@ -18,6 +18,7 @@ const prescriptionSchema = new Schema<IPrescription>(
     patientId: { type: String, required: true, index: true },
     doctorId: { type: String, required: true },
     appointmentId: { type: String },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     medications: { type: [Schema.Types.Mixed], required: true } as any,
     notes: { type: String },
     isAIGenerated: { type: Boolean, default: false },

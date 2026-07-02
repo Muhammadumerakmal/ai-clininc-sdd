@@ -48,10 +48,10 @@ export class PrescriptionService {
       repo.findMany({
         skip: (params.page - 1) * params.limit,
         take: params.limit,
-        where: where as any,
+        where,
         orderBy: { createdAt: "desc" },
       }),
-      repo.count(where as any),
+      repo.count(where),
     ]);
 
     return {

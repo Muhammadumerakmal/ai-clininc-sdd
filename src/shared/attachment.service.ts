@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
-import { env } from "../../config/env.js";
-import { logger } from "../../config/logger.js";
+import { env } from "../config/env.js";
+import { logger } from "../config/logger.js";
 
 if (env.CLOUDINARY_CLOUD_NAME) {
   cloudinary.config({
