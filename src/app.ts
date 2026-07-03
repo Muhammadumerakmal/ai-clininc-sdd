@@ -12,7 +12,8 @@ import routes from "./routes/index.js";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.FRONTEND_URL, credentials: true }));
+const allowedOrigins = env.FRONTEND_URL.split(",").map((s) => s.trim());
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(rateLimit as unknown as express.RequestHandler);
