@@ -1,7 +1,5 @@
 {
   "version": 2,
   "rootDirectory": "clinic-frontend",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
   "framework": "nextjs"
 }
