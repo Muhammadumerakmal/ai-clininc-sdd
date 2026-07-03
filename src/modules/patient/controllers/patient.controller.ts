@@ -6,7 +6,12 @@ const patientService = new PatientService();
 
 export async function createPatient(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const data = { ...req.body, clinicId: req.body.clinicId || req.user?.clinicId };
+    const clinicId = req.body.clinicId || req.user?.clinicId;
+    if (!clinicId) {
+      res.status(400).json({ success: false, message: "Clinic ID is required" });
+      return;
+    }
+    const data = { ...req.body, clinicId };
     const patient = await patientService.create(data);
     sendSuccess(res, patient, "Patient created successfully", 201);
   } catch (error) {
