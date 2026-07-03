@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Bell, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export function DashboardHeader() {
@@ -19,24 +18,20 @@ export function DashboardHeader() {
     <header className="h-14 border-b bg-background flex items-center justify-between px-6">
       <div />
       <div className="flex items-center gap-3">
-        <Link href="/notifications">
-          <Button variant="ghost" size="icon">
-            <Bell className="h-4 w-4" />
-          </Button>
+        <Link href="/notifications" className="inline-flex items-center justify-center rounded-lg p-2 hover:bg-accent">
+          <Bell className="h-4 w-4" />
         </Link>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" className="flex items-center gap-2 px-2">
-              <Avatar className="h-7 w-7">
-                <AvatarFallback className="text-xs">
-                  {user?.name?.split(" ").map((n) => n[0]).join("").toUpperCase() || "U"}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-left text-sm leading-tight hidden md:block">
-                <p className="font-medium">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">{user?.role}</p>
-              </div>
-            </Button>
+          <DropdownMenuTrigger className="flex items-center gap-2 px-2 rounded-lg hover:bg-accent cursor-pointer">
+            <Avatar className="h-7 w-7">
+              <AvatarFallback className="text-xs">
+                {user?.name?.split(" ").map((n) => n[0]).join("").toUpperCase() || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="text-left text-sm leading-tight hidden md:block">
+              <p className="font-medium">{user?.name}</p>
+              <p className="text-xs text-muted-foreground">{user?.role}</p>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={logout}>

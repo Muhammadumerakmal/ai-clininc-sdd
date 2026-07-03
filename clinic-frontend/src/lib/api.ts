@@ -42,7 +42,8 @@ async function request<T>(
         window.location.href = "/login";
       }
     }
-    throw new Error(err.message || "An error occurred");
+    const detail = err.errors?.length ? `: ${err.errors.join("; ")}` : "";
+    throw new Error(`${err.message}${detail}` || "An error occurred");
   }
 
   return (json as ApiResponse<T>).data;
