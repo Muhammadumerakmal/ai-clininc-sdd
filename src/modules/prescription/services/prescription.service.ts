@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { PrescriptionRepository } from "../repositories/prescription.repository.js";
 import { NotFoundError, ForbiddenError } from "../../../shared/errors.js";
 import { logger } from "../../../config/logger.js";
@@ -10,16 +9,16 @@ export class PrescriptionService {
     patientId: string;
     doctorId: string;
     appointmentId?: string;
-    medications: Prisma.InputJsonValue;
+    medications: Record<string, unknown>;
     notes?: string;
     isAIGenerated?: boolean;
     requiresDoctorApproval?: boolean;
   }) {
     const prescription = await repo.create({
-      patient: { connect: { id: data.patientId } },
-      doctor: { connect: { id: data.doctorId } },
-      appointment: data.appointmentId ? { connect: { id: data.appointmentId } } : undefined,
-      medications: data.medications as Prisma.InputJsonValue,
+      patientId: data.patientId,
+      doctorId: data.doctorId,
+      appointmentId: data.appointmentId,
+      medications: data.medications,
       notes: data.notes,
       isAIGenerated: data.isAIGenerated ?? false,
       requiresDoctorApproval: data.requiresDoctorApproval ?? true,

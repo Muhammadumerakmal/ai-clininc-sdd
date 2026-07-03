@@ -2,9 +2,10 @@ import app from "./app.js";
 import { env } from "./config/env.js";
 import { logger } from "./config/logger.js";
 import { connectDatabase, disconnectDatabase } from "./config/database.js";
+import { connectRedis, disconnectRedis } from "./config/redis.js";
 
 async function main(): Promise<void> {
-  await connectDatabase();
+  await Promise.all([connectDatabase(), connectRedis()]);
 
   app.listen(env.PORT, () => {
     logger.info({ port: env.PORT }, `Server running on port ${env.PORT}`);
@@ -13,18 +14,15 @@ async function main(): Promise<void> {
 
 main().catch(async (error) => {
   logger.fatal({ event: "server_startup_failed", error });
-  await disconnectDatabase();
+  await Promise.all([disconnectDatabase(), disconnectRedis()]);
   process.exit(1);
 });
 
-process.on("SIGTERM", async () => {
-  logger.info("SIGTERM received, shutting down");
-  await disconnectDatabase();
+async function shutdown(): Promise<void> {
+  logger.info("Shutting down gracefully");
+  await Promise.all([disconnectDatabase(), disconnectRedis()]);
   process.exit(0);
-});
+}
 
-process.on("SIGINT", async () => {
-  logger.info("SIGINT received, shutting down");
-  await disconnectDatabase();
-  process.exit(0);
-});
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
