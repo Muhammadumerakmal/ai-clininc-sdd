@@ -2,6 +2,9 @@ node_modules/
 dist/
 build/
 coverage/
+.next/
+api/index.js
+api/index.js.map
 *.log
 .env
 .env*
