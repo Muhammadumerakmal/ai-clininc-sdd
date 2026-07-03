@@ -37,7 +37,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    sendSuccess(res, { user: result.user }, "Login successful");
+    sendSuccess(res, { accessToken: result.accessToken, user: result.user }, "Login successful");
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction): 
       maxAge: 15 * 60 * 1000,
     });
 
-    sendSuccess(res, {}, "Token refreshed");
+    sendSuccess(res, { accessToken: result.accessToken }, "Token refreshed");
   } catch (error) {
     next(error);
   }
