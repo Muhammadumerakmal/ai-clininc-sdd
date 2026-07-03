@@ -1,10 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  outputFileTracingRoot: __dirname,
-  experimental: {
-    swcTrace: false,
-  },
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
