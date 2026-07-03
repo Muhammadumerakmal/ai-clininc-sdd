@@ -7,14 +7,14 @@ import { logger } from "../../../config/logger.js";
 const authRepo = new AuthRepository();
 
 export class AuthService {
-  async register(email: string, password: string, name: string, role: string) {
+  async register(email: string, password: string, name: string, role: string, clinicId?: string) {
     const existing = await authRepo.findByEmail(email);
     if (existing) {
       throw new ConflictError("Email already registered");
     }
 
     const passwordHash = await hashPassword(password);
-    const user = await authRepo.create({ email, passwordHash, name, role });
+    const user = await authRepo.create({ email, passwordHash, name, role, clinicId });
 
     logger.info({ event: "user_registered", userId: user.id, role: user.role });
 

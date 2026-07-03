@@ -7,8 +7,8 @@ const authService = new AuthService();
 
 export async function register(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { email, password, name, role } = req.body;
-    const result = await authService.register(email, password, name, role);
+    const { email, password, name, role, clinicId } = req.body;
+    const result = await authService.register(email, password, name, role, clinicId);
     sendSuccess(res, result, "Registration successful. Please verify your email.", 201);
   } catch (error) {
     next(error);
