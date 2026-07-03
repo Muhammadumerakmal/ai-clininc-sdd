@@ -21,7 +21,7 @@ A modular monolith backend for managing clinic operations: patient registration,
 - Node.js >= 22
 - MongoDB (local or Atlas)
 - Redis (for BullMQ queues)
-- pnpm (recommended) or npm
+- npm
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ A modular monolith backend for managing clinic operations: patient registration,
 # Clone and install
 git clone <repo>
 cd ai-clinic-mgmt-backend
-pnpm install
+npm install
 
 # Configure environment
 cp .env.example .env
@@ -39,7 +39,7 @@ cp .env.example .env
 docker compose up -d
 
 # Run in development
-pnpm dev
+npm run dev
 ```
 
 The server starts at `http://localhost:8000`.
@@ -99,14 +99,14 @@ Error responses use the same structure with `success: false`.
 
 | Script | Description |
 |--------|-------------|
-| `pnpm dev` | Start dev server with hot reload |
-| `pnpm build` | Compile TypeScript |
-| `pnpm start` | Start production server |
-| `pnpm test` | Run all tests |
-| `pnpm test:unit` | Run unit tests |
-| `pnpm test:integration` | Run integration tests |
-| `pnpm lint` | Lint code |
-| `pnpm format` | Format code with Prettier |
+| `npm run dev` | Start dev server with hot reload |
+| `npm run build` | Compile TypeScript |
+| `npm start` | Start production server |
+| `npm test` | Run all tests |
+| `npm run test:unit` | Run unit tests |
+| `npm run test:int` | Run integration tests |
+| `npm run lint` | Lint code |
+| `npm run format` | Format code with Prettier |
 
 ## Project Structure
 

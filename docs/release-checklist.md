@@ -10,7 +10,7 @@
 - [ ] HTTPS enabled behind reverse proxy
 
 ## Build
-- [ ] `pnpm build` succeeds
+- [ ] `npm run build` succeeds
 - [ ] TypeScript compilation produces 0 errors
 - [ ] Docker image builds successfully
 

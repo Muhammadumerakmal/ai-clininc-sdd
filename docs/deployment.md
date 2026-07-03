@@ -4,7 +4,7 @@
 
 - Docker & Docker Compose
 - Node.js 22+
-- pnpm
+- npm
 
 ## Production Deployment
 
@@ -24,9 +24,9 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ### 3. Manual Deployment
 
 ```bash
-pnpm install --prod
-pnpm build
-pnpm start
+npm ci --omit=dev
+npm run build
+npm start
 ```
 
 ## Environment Variables
