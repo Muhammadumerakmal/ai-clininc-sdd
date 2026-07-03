@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "Patient" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: "Patient", clinicId: "" });
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
@@ -66,6 +66,10 @@ export default function RegisterPage() {
                 <SelectItem value="Receptionist">Receptionist</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="clinicId">Clinic ID (optional)</Label>
+            <Input id="clinicId" placeholder="Paste your clinic ID" value={form.clinicId} onChange={(e) => setForm({ ...form, clinicId: e.target.value })} />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Creating account..." : "Create account"}
