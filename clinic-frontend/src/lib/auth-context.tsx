@@ -23,7 +23,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !!localStorage.getItem("accessToken");
+    }
+    return false;
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -32,8 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .then(setUser)
         .catch(() => localStorage.removeItem("accessToken"))
         .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
     }
   }, []);
 

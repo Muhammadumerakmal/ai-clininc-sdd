@@ -5,7 +5,6 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable } from "@/components/shared/data-table";
-import { StatusBadge } from "@/components/shared/status-badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
@@ -29,7 +28,6 @@ export default function PatientsPage() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    setLoading(true);
     api.get<{ patients: Patient[]; pagination: { page: number; totalPages: number } }>(
       `/patients?page=${page}&limit=20&search=${search}`
     )

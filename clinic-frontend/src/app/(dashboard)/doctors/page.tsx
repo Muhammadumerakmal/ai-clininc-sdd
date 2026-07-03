@@ -25,7 +25,6 @@ export default function DoctorsPage() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    setLoading(true);
     api.get<{ doctors: Doctor[]; pagination: { page: number; totalPages: number } }>(
       `/doctors?page=${page}&limit=20&search=${search}`
     )

@@ -30,7 +30,6 @@ export default function AppointmentsPage() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    setLoading(true);
     api.get<{ appointments?: Appointment[]; pagination?: { page: number; totalPages: number } }>(
       `/appointments?page=${page}&limit=20&search=${search}`
     )
