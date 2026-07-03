@@ -6,7 +6,8 @@ const patientService = new PatientService();
 
 export async function createPatient(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const patient = await patientService.create(req.body);
+    const data = { ...req.body, clinicId: req.body.clinicId || req.user?.clinicId };
+    const patient = await patientService.create(data);
     sendSuccess(res, patient, "Patient created successfully", 201);
   } catch (error) {
     next(error);

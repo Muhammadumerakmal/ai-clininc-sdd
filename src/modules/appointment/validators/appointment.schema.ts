@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createAppointmentSchema = z.object({
   patientId: z.string().uuid(),
   doctorId: z.string().uuid(),
-  clinicId: z.string().uuid(),
+  clinicId: z.string().uuid().optional(),
   dateTime: z.coerce.date(),
   reason: z.string().optional(),
   notes: z.string().optional(),

@@ -6,7 +6,8 @@ const appointmentService = new AppointmentService();
 
 export async function createAppointment(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const appointment = await appointmentService.create(req.body);
+    const data = { ...req.body, clinicId: req.body.clinicId || req.user?.clinicId };
+    const appointment = await appointmentService.create(data);
     sendSuccess(res, appointment, "Appointment created successfully", 201);
   } catch (error) {
     next(error);
