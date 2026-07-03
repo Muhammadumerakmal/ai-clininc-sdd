@@ -68,8 +68,9 @@ export default function RegisterPage() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="clinicId">Clinic ID (optional)</Label>
+            <Label htmlFor="clinicId">Clinic ID</Label>
             <Input id="clinicId" placeholder="Paste your clinic ID" value={form.clinicId} onChange={(e) => setForm({ ...form, clinicId: e.target.value })} />
+            <p className="text-xs text-muted-foreground">Required to create patients. Ask your admin for the clinic ID.</p>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Creating account..." : "Create account"}
