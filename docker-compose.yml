@@ -1,14 +1,10 @@
 services:
-  postgres:
-    image: postgres:17-alpine
+  mongo:
+    image: mongo:7
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: clinic_mgmt
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
 
   redis:
     image: redis:7-alpine
@@ -18,5 +14,5 @@ services:
       - redis_data:/data
 
 volumes:
-  postgres_data:
+  mongo_data:
   redis_data:
