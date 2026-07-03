@@ -1,6 +1,0 @@
-{
-  "version": 2,
-  "name": "ai-clinic-frontend",
-  "rootDirectory": "clinic-frontend",
-  "framework": "nextjs"
-}
