@@ -6,6 +6,9 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DataTable } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { formatDate } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 interface LabOrder {
   id: string;
@@ -35,11 +38,23 @@ export default function LabOrdersPage() {
     { key: "doctor", header: "Ordered By", cell: (o: LabOrder) => o.doctor?.user?.name || o.doctorId },
     { key: "createdAt", header: "Date", cell: (o: LabOrder) => formatDate(o.createdAt) },
     { key: "status", header: "Status", cell: (o: LabOrder) => <StatusBadge status={o.status} /> },
+    {
+      key: "actions", header: "",
+      cell: (o: LabOrder) => (
+        <Link href={`/lab-orders/${o.id}`}>
+          <Button variant="ghost" size="sm">View</Button>
+        </Link>
+      ),
+    },
   ];
 
   return (
     <div>
-      <PageHeader title="Lab Orders" description="Manage lab test orders" />
+      <PageHeader title="Lab Orders" description="Manage lab test orders">
+        <Link href="/lab-orders/new">
+          <Button><Plus className="h-4 w-4 mr-2" />New Lab Order</Button>
+        </Link>
+      </PageHeader>
       <DataTable columns={columns} data={orders} loading={loading} />
     </div>
   );

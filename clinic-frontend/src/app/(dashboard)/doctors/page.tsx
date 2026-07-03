@@ -7,7 +7,7 @@ import { DataTable } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import Link from "next/link";
 
 interface Doctor {
@@ -53,7 +53,11 @@ export default function DoctorsPage() {
 
   return (
     <div>
-      <PageHeader title="Doctors" description="Manage doctor profiles" />
+      <PageHeader title="Doctors" description="Manage doctor profiles">
+        <Link href="/doctors/new">
+          <Button><Plus className="h-4 w-4 mr-2" />New Doctor</Button>
+        </Link>
+      </PageHeader>
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input placeholder="Search doctors..." className="pl-10 max-w-sm" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />

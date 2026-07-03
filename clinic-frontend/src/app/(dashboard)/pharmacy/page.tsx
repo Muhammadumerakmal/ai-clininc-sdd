@@ -5,6 +5,9 @@ import { api } from "@/lib/api";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTable } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 interface Medicine {
   id: string;
@@ -41,11 +44,23 @@ export default function PharmacyPage() {
     )},
     { key: "price", header: "Price", cell: (m: Medicine) => `$${m.price.toFixed(2)}` },
     { key: "isActive", header: "Status", cell: (m: Medicine) => m.isActive ? <StatusBadge status="Active" /> : <StatusBadge status="Inactive" /> },
+    {
+      key: "actions", header: "",
+      cell: (m: Medicine) => (
+        <Link href={`/pharmacy/${m.id}`}>
+          <Button variant="ghost" size="sm">View</Button>
+        </Link>
+      ),
+    },
   ];
 
   return (
     <div>
-      <PageHeader title="Pharmacy" description="Medicine inventory" />
+      <PageHeader title="Pharmacy" description="Medicine inventory">
+        <Link href="/pharmacy/new">
+          <Button><Plus className="h-4 w-4 mr-2" />Add Medicine</Button>
+        </Link>
+      </PageHeader>
       <DataTable columns={columns} data={medicines} loading={loading} />
     </div>
   );

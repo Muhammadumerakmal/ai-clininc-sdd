@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { DataTable } from "@/components/shared/data-table";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 interface MedicalRecord {
@@ -47,7 +48,11 @@ export default function MedicalRecordsPage() {
 
   return (
     <div>
-      <PageHeader title="Medical Records" description="Clinical documentation" />
+      <PageHeader title="Medical Records" description="Clinical documentation">
+        <Link href="/medical-records/new">
+          <Button><Plus className="h-4 w-4 mr-2" />New Record</Button>
+        </Link>
+      </PageHeader>
       <DataTable columns={columns} data={records} loading={loading} />
     </div>
   );

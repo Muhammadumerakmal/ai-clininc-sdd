@@ -7,6 +7,9 @@ import { DataTable } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 interface Prescription {
   id: string;
@@ -37,11 +40,23 @@ export default function PrescriptionsPage() {
     { key: "createdAt", header: "Date", cell: (p: Prescription) => formatDate(p.createdAt) },
     { key: "isAIGenerated", header: "AI", cell: (p: Prescription) => p.isAIGenerated ? <Badge variant="secondary">AI</Badge> : "-" },
     { key: "approvedAt", header: "Status", cell: (p: Prescription) => p.approvedAt ? <StatusBadge status="Approved" /> : <StatusBadge status="Pending" /> },
+    {
+      key: "actions", header: "",
+      cell: (p: Prescription) => (
+        <Link href={`/prescriptions/${p.id}`}>
+          <Button variant="ghost" size="sm">View</Button>
+        </Link>
+      ),
+    },
   ];
 
   return (
     <div>
-      <PageHeader title="Prescriptions" description="Manage prescriptions" />
+      <PageHeader title="Prescriptions" description="Manage prescriptions">
+        <Link href="/prescriptions/new">
+          <Button><Plus className="h-4 w-4 mr-2" />New Prescription</Button>
+        </Link>
+      </PageHeader>
       <DataTable columns={columns} data={prescriptions} loading={loading} />
     </div>
   );

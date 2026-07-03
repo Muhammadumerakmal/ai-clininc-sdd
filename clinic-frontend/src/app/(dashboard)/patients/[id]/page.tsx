@@ -7,7 +7,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Edit } from "lucide-react";
+import Link from "next/link";
 
 interface Patient {
   id: string;
@@ -38,6 +39,7 @@ export default function PatientDetailPage() {
   return (
     <div>
       <PageHeader title={`${patient.firstName} ${patient.lastName}`} description="Patient details">
+        <Link href={`/patients/${id}/edit`}><Button variant="outline"><Edit className="h-4 w-4 mr-2" />Edit</Button></Link>
         <Button variant="outline" onClick={() => router.push("/patients")}><ArrowLeft className="h-4 w-4 mr-2" />Back</Button>
       </PageHeader>
       <div className="grid gap-4 md:grid-cols-2">

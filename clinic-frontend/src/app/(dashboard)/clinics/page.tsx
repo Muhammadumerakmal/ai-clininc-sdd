@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Phone, Mail, MapPin } from "lucide-react";
+import { Building2, Phone, Mail, MapPin, Plus } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface Clinic {
   id: string;
@@ -30,10 +32,14 @@ export default function ClinicsPage() {
 
   return (
     <div>
-      <PageHeader title="Clinics" description="Manage clinics and departments" />
+      <PageHeader title="Clinics" description="Manage clinics and departments">
+        <Link href="/clinics/new">
+          <Button><Plus className="h-4 w-4 mr-2" />New Clinic</Button>
+        </Link>
+      </PageHeader>
       <div className="grid gap-4 md:grid-cols-2">
         {clinics.map((clinic) => (
-          <Card key={clinic.id}>
+          <Card key={clinic.id} className="cursor-pointer hover:bg-accent/50 transition-colors" onClick={() => window.location.href = `/clinics/${clinic.id}`}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Building2 className="h-5 w-5 text-muted-foreground" />
