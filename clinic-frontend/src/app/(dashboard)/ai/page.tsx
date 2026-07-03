@@ -23,20 +23,9 @@ export default function AIPage() {
     setLoading(true);
     setResponse("");
     try {
-      const endpoints: Record<string, string> = {
-        "symptom-analysis": "/ai/symptom-analysis",
-        "diagnosis-suggestion": "/ai/diagnosis-suggestion",
-        "prescription-draft": "/ai/prescription-draft",
-        general: "/ai/chat",
-      };
-      const bodies: Record<string, unknown> = {
-        "symptom-analysis": { symptoms: prompt.split("\n").filter(Boolean) },
-        "diagnosis-suggestion": { symptoms: prompt.split("\n").filter(Boolean) },
-        "prescription-draft": { diagnosis: prompt, patientId: "", doctorId: "" },
-        general: { message: prompt },
-      };
-      const data = await api.post<{ response: string }>(endpoints[requestType], bodies[requestType]);
-      setResponse(data.response);
+      const prefix = `[${requestType.replace("-", " ")}] `;
+      const data = await api.post<Record<string, unknown>>("/ai/chat", { message: prefix + prompt });
+      setResponse((data.reply as string) || "No response");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "AI request failed");
     } finally {
