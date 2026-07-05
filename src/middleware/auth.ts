@@ -15,6 +15,13 @@ declare module "express" {
   }
 }
 
+export function assertUser(user: JwtPayload | undefined): JwtPayload {
+  if (!user) {
+    throw new Error("Authentication required");
+  }
+  return user;
+}
+
 export function authenticate(req: Request, _res: Response, next: NextFunction): void {
   const token = extractToken(req);
 

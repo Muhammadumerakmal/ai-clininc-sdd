@@ -3,12 +3,13 @@ import { AuthRepository } from "../repositories/auth.repository.js";
 import { sendSuccess, sendError } from "../../../shared/response.js";
 import { hashPassword, verifyPassword } from "../services/password.service.js";
 import { NotFoundError, ValidationError } from "../../../shared/errors.js";
+import { assertUser } from "../../../middleware/auth.js";
 
 const authRepo = new AuthRepository();
 
 export async function getProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const user = await authRepo.findById(req.user!.userId);
+    const user = await authRepo.findById(assertUser(req.user).userId);
     if (!user) {
       throw new NotFoundError("User not found");
     }
@@ -32,7 +33,7 @@ export async function updateProfile(req: Request, res: Response, next: NextFunct
     if (!name && !email) {
       throw new ValidationError("Nothing to update");
     }
-    const user = await authRepo.updateProfile(req.user!.userId, { name, email });
+    const user = await authRepo.updateProfile(assertUser(req.user).userId, { name, email });
     if (!user) throw new NotFoundError("User not found");
     sendSuccess(res, { id: user.id, name: user.name, email: user.email });
   } catch (error) {
@@ -43,7 +44,7 @@ export async function updateProfile(req: Request, res: Response, next: NextFunct
 export async function changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await authRepo.findById(req.user!.userId);
+    const user = await authRepo.findById(assertUser(req.user).userId);
     if (!user) {
       throw new NotFoundError("User not found");
     }

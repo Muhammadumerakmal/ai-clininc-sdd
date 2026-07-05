@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { VerificationService } from "../services/verification.service.js";
 import { sendSuccess } from "../../../shared/response.js";
+import { assertUser } from "../../../middleware/auth.js";
 
 const verificationService = new VerificationService();
 
@@ -16,7 +17,7 @@ export async function verifyEmail(req: Request, res: Response, next: NextFunctio
 
 export async function resendVerification(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const token = await verificationService.createEmailVerificationToken(req.user!.userId);
+    const token = await verificationService.createEmailVerificationToken(assertUser(req.user).userId);
     sendSuccess(res, { token }, "Verification email sent");
   } catch (error) {
     next(error);

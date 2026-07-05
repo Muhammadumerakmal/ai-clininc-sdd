@@ -20,11 +20,11 @@ export class AttachmentService {
       const uploadStream = cloudinary.uploader.upload_stream(
         { folder, resource_type: "auto" },
         (error, result) => {
-          if (error) {
+          if (error || !result) {
             logger.error({ event: "upload_failed", error });
-            reject(error);
+            reject(error || new Error("Upload failed with no result"));
           } else {
-            resolve({ url: result!.secure_url, publicId: result!.public_id });
+            resolve({ url: result.secure_url, publicId: result.public_id });
           }
         }
       );

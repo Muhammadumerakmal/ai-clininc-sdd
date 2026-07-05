@@ -12,7 +12,7 @@ describe("TokenService", () => {
     it("should generate a JWT token", () => {
       const token = generateAccessToken({ userId: "u1", role: "Doctor" });
       expect(typeof token).toBe("string");
-      const decoded = jwt.decode(token) as any;
+      const decoded = jwt.decode(token) as { userId: string; role: string };
       expect(decoded.userId).toBe("u1");
       expect(decoded.role).toBe("Doctor");
     });

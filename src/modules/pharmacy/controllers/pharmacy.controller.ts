@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PharmacyService } from "../services/pharmacy.service.js";
 import { sendSuccess } from "../../../shared/response.js";
+import { assertUser } from "../../../middleware/auth.js";
 
 const service = new PharmacyService();
 
@@ -48,7 +49,7 @@ export async function getLowStock(_req: Request, res: Response, next: NextFuncti
 
 export async function dispense(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const data = { ...req.body, pharmacistId: req.user!.userId };
+    const data = { ...req.body, pharmacistId: assertUser(req.user).userId };
     const dispensation = await service.dispense(data);
     sendSuccess(res, dispensation, "Medicine dispensed", 201);
   } catch (error) {

@@ -18,6 +18,7 @@ export class AuthRepository {
     passwordHash: string;
     name: string;
     role: string;
+    clinicId?: string;
   }) {
     return User.create(data);
   }
