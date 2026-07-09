@@ -6,7 +6,11 @@ let isConnected = false;
 
 async function ensureConnections(): Promise<void> {
   if (isConnected) return;
-  await connectDatabase();
+  try {
+    await connectDatabase();
+  } catch {
+    // Database is optional — skip so root route still works (Vercel has no local MongoDB)
+  }
   try {
     await connectRedis();
   } catch {

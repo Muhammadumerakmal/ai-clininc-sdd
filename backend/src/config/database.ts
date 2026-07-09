@@ -45,7 +45,7 @@ export {
 
 export async function connectDatabase(): Promise<void> {
   try {
-    await mongoose.connect(env.MONGODB_URL);
+    await mongoose.connect(env.MONGODB_URL, { serverSelectionTimeoutMS: 5000 });
     logger.info("Database connected successfully");
   } catch (error) {
     logger.error({ event: "database_connection_failed", error });

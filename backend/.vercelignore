@@ -1,0 +1,10 @@
+tests/
+docs/
+history/
+specs/
+scripts/
+node_modules/
+Dockerfile
+docker-compose.yml
+docker-compose.prod.yml
+*.md
