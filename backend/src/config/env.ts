@@ -24,7 +24,7 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
-  FRONTEND_URL: z.string().default("http://localhost:5173"),
+  FRONTEND_URL: z.string().default("http://localhost:3000,http://localhost:5173"),
   QDRANT_URL: z.string().default("http://localhost:6333"),
   QDRANT_API_KEY: z.string().optional(),
 });
