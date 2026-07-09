@@ -5,7 +5,13 @@ import { logger } from "./logger.js";
 let client: RedisClientType;
 
 export async function connectRedis(): Promise<RedisClientType> {
-  client = createClient({ url: env.REDIS_URL, socket: { connectTimeout: 2000 } });
+  client = createClient({
+    url: env.REDIS_URL,
+    socket: {
+      connectTimeout: 2000,
+      reconnectStrategy: false,
+    },
+  });
 
   client.on("error", (err) => logger.error({ event: "redis_error" }, err.message));
   client.on("connect", () => logger.info("Redis connected"));

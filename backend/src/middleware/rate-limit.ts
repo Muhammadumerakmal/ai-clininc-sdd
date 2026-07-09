@@ -12,6 +12,11 @@ export async function rateLimit(req: Request, res: Response, next: NextFunction)
 
   try {
     const redis = getRedis();
+    if (!redis || !redis.isOpen) {
+      next();
+      return;
+    }
+
     const windowKey = `${key}:${windowStart}`;
 
     const count = await redis.incr(windowKey);
