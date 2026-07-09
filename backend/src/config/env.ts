@@ -7,11 +7,11 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   PORT: z.coerce.number().default(8000),
   CORS: z.string().default("*"),
-  MONGODB_URL: z.string(),
+  MONGODB_URL: z.string().default(""),
   REDIS_URL: z.string().default("redis://localhost:6379"),
-  ACCESS_TOKEN_SECRET: z.string(),
+  ACCESS_TOKEN_SECRET: z.string().default(""),
   ACCESS_TOKEN_EXPIRY: z.string().default("1day"),
-  REFRESH_TOKEN_SECRET: z.string(),
+  REFRESH_TOKEN_SECRET: z.string().default(""),
   REFRESH_TOKEN_EXPIRY: z.string().default("7d"),
   MAILTRAP_SMTP_HOST: z.string().default("sandbox.smtp.mailtrap.io"),
   MAILTRAP_SMTP_PORT: z.coerce.number().default(2525),
@@ -33,10 +33,9 @@ const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
   console.error("Invalid environment variables:", parsed.error.flatten().fieldErrors);
-  if (process.env.VERCEL) {
-    throw new Error("Missing required environment variables");
+  if (!process.env.VERCEL) {
+    process.exit(1);
   }
-  process.exit(1);
 }
 
-export const env = parsed.data;
+export const env: z.infer<typeof envSchema> = parsed.success ? parsed.data : envSchema.parse({});
