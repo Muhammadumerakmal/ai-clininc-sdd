@@ -20,8 +20,8 @@ vi.mock("../../../../src/modules/auth/services/token.service", () => ({
 vi.mock("../../../../src/config/logger", () => ({ logger: { info: vi.fn() } }));
 
 import { AuthService } from "../../../../src/modules/auth/services/auth.service";
-import { hashPassword, verifyPassword } from "../../../../src/modules/auth/services/password.service";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../../../../src/modules/auth/services/token.service";
+import { verifyPassword } from "../../../../src/modules/auth/services/password.service";
+import { verifyRefreshToken } from "../../../../src/modules/auth/services/token.service";
 
 describe("AuthService", () => {
   let service: AuthService;

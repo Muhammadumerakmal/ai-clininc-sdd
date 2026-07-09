@@ -6,7 +6,7 @@ import { api } from "@/lib/api";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Phone, Mail, MapPin, ArrowLeft } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowLeft } from "lucide-react";
 
 interface Department {
   id: string;

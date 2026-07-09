@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { sendSuccess, sendError } from "../../../src/shared/response.js";
 
 describe("Response helpers", () => {
   it("should produce correct success shape", () => {
