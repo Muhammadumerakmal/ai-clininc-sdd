@@ -6,7 +6,12 @@ let isConnected = false;
 
 async function ensureConnections(): Promise<void> {
   if (isConnected) return;
-  await Promise.all([connectDatabase(), connectRedis()]);
+  await connectDatabase();
+  try {
+    await connectRedis();
+  } catch {
+    // Redis is optional — skip silently (not available on Vercel serverless)
+  }
   isConnected = true;
 }
 

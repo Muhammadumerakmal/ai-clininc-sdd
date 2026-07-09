@@ -19,6 +19,10 @@ app.use(cookieParser());
 app.use(rateLimit as unknown as express.RequestHandler);
 app.use(auditLog);
 
+app.get("/", (_req, res) => {
+  res.json({ success: true, message: "AI Clinic Management API", version: "1.0.0" });
+});
+
 app.use("/api/v1", routes);
 
 app.use(errorHandler);
