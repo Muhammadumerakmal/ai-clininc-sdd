@@ -21,5 +21,5 @@ async function ensureConnections(): Promise<void> {
 
 export default async function handler(req: any, res: any) {
   await ensureConnections();
-  return app(req, res);
+  app(req, res);
 }
