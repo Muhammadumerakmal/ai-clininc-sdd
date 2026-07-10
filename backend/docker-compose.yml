@@ -57,6 +57,19 @@ services:
       redis:
         condition: service_healthy
 
+  mongo-express:
+    image: mongo-express:1.0
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root123
+      ME_CONFIG_MONGODB_URL: mongodb://root:root123@mongo:27017/
+    depends_on:
+      mongo:
+        condition: service_healthy
+
 volumes:
   mongo_data:
   redis_data:
