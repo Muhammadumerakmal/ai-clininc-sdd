@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createLabOrderSchema = z.object({
-  patientId: z.string().uuid(),
-  doctorId: z.string().uuid(),
-  medicalRecordId: z.string().uuid().optional(),
+  patientId: z.string(),
+  doctorId: z.string(),
+  medicalRecordId: z.string().optional(),
   testName: z.string().min(1, "Test name is required"),
   instructions: z.string().optional(),
 });

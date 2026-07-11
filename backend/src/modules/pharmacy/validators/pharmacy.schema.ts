@@ -22,8 +22,8 @@ export const updateMedicineSchema = z.object({
 });
 
 export const dispenseSchema = z.object({
-  prescriptionId: z.string().uuid(),
-  medicineId: z.string().uuid(),
+  prescriptionId: z.string().min(1),
+  medicineId: z.string().min(1),
   quantity: z.number().int().positive(),
   notes: z.string().optional(),
 });

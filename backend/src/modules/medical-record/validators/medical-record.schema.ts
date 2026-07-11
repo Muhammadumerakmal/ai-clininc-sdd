@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createMedicalRecordSchema = z.object({
-  patientId: z.string().uuid(),
-  doctorId: z.string().uuid(),
-  appointmentId: z.string().uuid().optional(),
+  patientId: z.string(),
+  doctorId: z.string(),
+  appointmentId: z.string().optional(),
   consultationNotes: z.string().min(1, "Consultation notes are required"),
   diagnosis: z.string().optional(),
   treatmentPlan: z.string().optional(),

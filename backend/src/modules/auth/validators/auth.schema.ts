@@ -5,7 +5,7 @@ export const registerSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   role: z.enum(["Patient", "Doctor", "Nurse", "Receptionist", "LabTechnician", "Pharmacist"]).default("Patient"),
-  clinicId: z.string().uuid().optional(),
+  clinicId: z.string().optional(),
 });
 
 export const loginSchema = z.object({

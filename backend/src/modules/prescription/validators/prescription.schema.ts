@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const medicationSchema = z.object({
-  medicineId: z.string().uuid(),
+  medicineId: z.string(),
   name: z.string(),
   dosage: z.string(),
   frequency: z.string(),
@@ -10,9 +10,9 @@ const medicationSchema = z.object({
 });
 
 export const createPrescriptionSchema = z.object({
-  patientId: z.string().uuid(),
-  doctorId: z.string().uuid(),
-  appointmentId: z.string().uuid().optional(),
+  patientId: z.string(),
+  doctorId: z.string(),
+  appointmentId: z.string().optional(),
   medications: z.array(medicationSchema).min(1, "At least one medication is required"),
   notes: z.string().optional(),
   isAIGenerated: z.boolean().default(false),

@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createAppointmentSchema = z.object({
-  patientId: z.string().uuid(),
-  doctorId: z.string().uuid(),
-  clinicId: z.string().uuid().optional(),
+  patientId: z.string(),
+  doctorId: z.string(),
+  clinicId: z.string().optional(),
   dateTime: z.coerce.date(),
   reason: z.string().optional(),
   notes: z.string().optional(),
@@ -20,9 +20,9 @@ export const appointmentQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
   status: z.string().optional(),
-  doctorId: z.string().uuid().optional(),
-  patientId: z.string().uuid().optional(),
-  clinicId: z.string().uuid().optional(),
+  doctorId: z.string().optional(),
+  patientId: z.string().optional(),
+  clinicId: z.string().optional(),
   dateFrom: z.coerce.date().optional(),
   dateTo: z.coerce.date().optional(),
 });
