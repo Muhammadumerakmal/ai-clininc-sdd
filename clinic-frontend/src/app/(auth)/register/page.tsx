@@ -23,7 +23,8 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await register(form);
+      const { clinicId, ...rest } = form;
+      await register(clinicId ? form : rest);
       toast.success("Registration successful. Please sign in.");
       router.push("/login");
     } catch (err) {
