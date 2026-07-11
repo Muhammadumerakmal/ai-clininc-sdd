@@ -10,7 +10,7 @@ const envSchema = z.object({
   MONGODB_URL: z.string().default(""),
   REDIS_URL: z.string().default("redis://localhost:6379"),
   ACCESS_TOKEN_SECRET: z.string().default(""),
-  ACCESS_TOKEN_EXPIRY: z.string().default("1day"),
+  ACCESS_TOKEN_EXPIRY: z.string().default("1d"),
   REFRESH_TOKEN_SECRET: z.string().default(""),
   REFRESH_TOKEN_EXPIRY: z.string().default("7d"),
   MAILTRAP_SMTP_HOST: z.string().default("sandbox.smtp.mailtrap.io"),

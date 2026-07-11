@@ -12,13 +12,22 @@ export function validate(schemas: ValidationSchemas) {
   return (req: Request, _res: Response, next: NextFunction): void => {
     try {
       if (schemas.body) {
-        req.body = schemas.body.parse(req.body);
+        Object.defineProperty(req, "body", {
+          value: schemas.body.parse(req.body),
+          writable: true,
+        });
       }
       if (schemas.params) {
-        req.params = schemas.params.parse(req.params) as Record<string, string>;
+        Object.defineProperty(req, "params", {
+          value: schemas.params.parse(req.params) as Record<string, string>,
+          writable: true,
+        });
       }
       if (schemas.query) {
-        req.query = schemas.query.parse(req.query) as Record<string, string>;
+        Object.defineProperty(req, "query", {
+          value: schemas.query.parse(req.query) as Record<string, string>,
+          writable: true,
+        });
       }
       next();
     } catch (error) {

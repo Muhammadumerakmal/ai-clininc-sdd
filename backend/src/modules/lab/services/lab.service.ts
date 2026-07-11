@@ -13,9 +13,9 @@ export class LabService {
     instructions?: string;
   }) {
     const labOrder = await repo.create({
-      patient: { connect: { id: data.patientId } },
-      doctor: { connect: { id: data.doctorId } },
-      medicalRecord: data.medicalRecordId ? { connect: { id: data.medicalRecordId } } : undefined,
+      patientId: data.patientId,
+      doctorId: data.doctorId,
+      medicalRecordId: data.medicalRecordId,
       testName: data.testName,
       instructions: data.instructions,
     });

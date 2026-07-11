@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import crypto from "node:crypto";
 import { env } from "../../../config/env.js";
 
 export interface TokenPayload {
@@ -7,10 +8,8 @@ export interface TokenPayload {
   clinicId?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const accessOptions: any = { expiresIn: env.ACCESS_TOKEN_EXPIRY };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const refreshOptions: any = { expiresIn: env.REFRESH_TOKEN_EXPIRY };
+const accessOptions = { expiresIn: env.ACCESS_TOKEN_EXPIRY } as jwt.SignOptions;
+const refreshOptions = { expiresIn: env.REFRESH_TOKEN_EXPIRY } as jwt.SignOptions;
 
 export function generateAccessToken(payload: TokenPayload): string {
   return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, accessOptions);

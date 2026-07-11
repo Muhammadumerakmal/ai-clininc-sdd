@@ -31,9 +31,9 @@ export class PharmacyService {
     const where: Record<string, unknown> = { isActive: true };
     if (params.category) where.category = params.category;
     if (params.search) {
-      where.OR = [
-        { name: { contains: params.search, mode: "insensitive" } },
-        { genericName: { contains: params.search, mode: "insensitive" } },
+      where.$or = [
+        { name: { $regex: params.search, $options: "i" } },
+        { genericName: { $regex: params.search, $options: "i" } },
       ];
     }
 
@@ -72,8 +72,8 @@ export class PharmacyService {
     }
 
     const dispensation = await repo.createDispensation({
-      prescription: { connect: { id: data.prescriptionId } },
-      medicine: { connect: { id: data.medicineId } },
+      prescriptionId: data.prescriptionId,
+      medicineId: data.medicineId,
       quantity: data.quantity,
       pharmacistId: data.pharmacistId,
       notes: data.notes,

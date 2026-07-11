@@ -23,9 +23,9 @@ export class AppointmentService {
     }
 
     const appointment = await appointmentRepo.create({
-      patient: { connect: { id: data.patientId } },
-      doctor: { connect: { id: data.doctorId } },
-      clinic: { connect: { id: data.clinicId } },
+      patientId: data.patientId,
+      doctorId: data.doctorId,
+      clinicId: data.clinicId,
       dateTime: data.dateTime,
       endTime,
       reason: data.reason,
