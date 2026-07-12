@@ -6,6 +6,9 @@ import { validate } from "../../../middleware/validate.js";
 import { createClinicSchema, updateClinicSchema, createDepartmentSchema } from "../validators/clinic.schema.js";
 
 const router = Router();
+
+router.post("/quick-create", validate({ body: createClinicSchema }), createClinic);
+
 router.use(authenticate);
 
 router.get("/", listClinics);

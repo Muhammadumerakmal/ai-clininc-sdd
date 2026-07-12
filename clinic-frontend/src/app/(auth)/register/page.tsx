@@ -10,12 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "Patient", clinicId: "" });
   const [loading, setLoading] = useState(false);
+  const [showClinicForm, setShowClinicForm] = useState(false);
+  const [clinicForm, setClinicForm] = useState({ name: "", address: "", phone: "", email: "" });
+  const [creatingClinic, setCreatingClinic] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
 
@@ -31,6 +35,21 @@ export default function RegisterPage() {
       toast.error(err instanceof Error ? err.message : "Registration failed");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function createClinic(e: React.FormEvent) {
+    e.preventDefault();
+    setCreatingClinic(true);
+    try {
+      const res = await api.post<{ _id: string; name: string }>("/clinics/quick-create", clinicForm);
+      setForm({ ...form, clinicId: res._id });
+      setShowClinicForm(false);
+      toast.success(`Clinic "${res.name}" created! ID copied to field.`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to create clinic");
+    } finally {
+      setCreatingClinic(false);
     }
   }
 
@@ -69,10 +88,29 @@ export default function RegisterPage() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="clinicId">Clinic ID</Label>
-            <Input id="clinicId" placeholder="Paste your clinic ID" value={form.clinicId} onChange={(e) => setForm({ ...form, clinicId: e.target.value })} />
-            <p className="text-xs text-muted-foreground">Required to create patients. Ask your admin for the clinic ID.</p>
+            <Label>Clinic ID</Label>
+            <div className="flex gap-2">
+              <Input placeholder="Paste your clinic ID" value={form.clinicId} onChange={(e) => setForm({ ...form, clinicId: e.target.value })} />
+              <Button type="button" variant="outline" size="icon" onClick={() => setShowClinicForm(!showClinicForm)} title="Create new clinic">
+                +
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">Required to create patients.</p>
           </div>
+
+          {showClinicForm && (
+            <div className="border rounded-lg p-4 space-y-3">
+              <p className="text-sm font-medium">Create a new clinic</p>
+              <Input placeholder="Clinic name" value={clinicForm.name} onChange={(e) => setClinicForm({ ...clinicForm, name: e.target.value })} required />
+              <Input placeholder="Address" value={clinicForm.address} onChange={(e) => setClinicForm({ ...clinicForm, address: e.target.value })} required />
+              <Input placeholder="Phone" value={clinicForm.phone} onChange={(e) => setClinicForm({ ...clinicForm, phone: e.target.value })} required />
+              <Input type="email" placeholder="Email" value={clinicForm.email} onChange={(e) => setClinicForm({ ...clinicForm, email: e.target.value })} required />
+              <Button type="button" size="sm" className="w-full" onClick={createClinic} disabled={creatingClinic}>
+                {creatingClinic ? "Creating..." : "Create Clinic"}
+              </Button>
+            </div>
+          )}
+
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Creating account..." : "Create account"}
           </Button>
