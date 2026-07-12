@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://ai-clininc-sdd-2vci.vercel.app/api/v1";
 
 interface ApiResponse<T> {
   success: boolean;
