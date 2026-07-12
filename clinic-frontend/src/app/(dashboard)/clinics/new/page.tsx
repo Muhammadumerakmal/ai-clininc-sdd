@@ -21,8 +21,8 @@ export default function NewClinicPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/clinics", form);
-      toast.success("Clinic created");
+      const clinic = await api.post<{ id: string; name: string }>("/clinics", form);
+      toast.success(`Clinic "${clinic.name}" created`, { description: `Clinic ID: ${clinic.id}` });
       router.push("/clinics");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to create clinic");

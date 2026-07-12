@@ -48,6 +48,9 @@ export default function ClinicsPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded select-all">{clinic.id}</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" /> {clinic.address}
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
